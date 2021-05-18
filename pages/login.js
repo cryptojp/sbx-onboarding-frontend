@@ -1,10 +1,9 @@
 import {Container, Row, Col, Navbar, Image} from 'react-bootstrap';
+import Link from 'next/link';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const backgroundImg = "https://cdn.dribbble.com/users/1633085/screenshots/6697520/shot_4x.jpg";
-
-
 
 function Login(){
   return (
@@ -20,7 +19,6 @@ function Login(){
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" />
         </Form.Group>
-    
         <Button
           variant="danger"
           type="button"
@@ -28,7 +26,9 @@ function Login(){
           onClick={() => console.log("haha")}
           style={{ borderRadius: '20px', padding: '10px', fontSize: '16px'}}
         >
-          Log In
+          <Link href="/">
+            <a style={{color: 'white !important'}}>Log In</a>
+          </Link>
         </Button>
       </Form>
       <div className='text-center'><a className='text-muted' href="/sign-up">Forgot your password?</a></div>
