@@ -9,9 +9,9 @@ export default function Home() {
 
   ]
   const cards = [
-    {stat: "3294", title: "New Subscribers", change: "+ 5.6%", info: "since last month"},
-    {stat: "£103,507", title: "Monthly Recurring Revenue", change: "- 12.6%", info: "since last month"},
-    {stat: "164", title: "Churned Customers", change: "+ 0.6%", info: "since last month"},
+    {stat: "3294", title: "New Subscribers", change: 5.6, info: "since last month"},
+    {stat: "£ 103,507", title: "Monthly Recurring Revenue", change: -12.6, info: "since last month"},
+    {stat: "164", title: "Churned Customers", change: + 0.6, info: "since last month"},
   ]
 
   const tables = [
@@ -20,7 +20,7 @@ export default function Home() {
       data: [["Itachi", "it@gmail.com", "£25.99"], ["Lebron", "lbj@gmail.com", "£17.99"], ["Boris", "bj@gmail.com", "£25.99"], ["Headie", "1@gmail.com", "£12.99"], ["Khabib", "khabib@gmail.com", "£25.99"]] ,
     },
     {title: "Failed Payments Customer", headings: ["Customer Id", "Contact", "Failed On"],
-    data: [["29385", "it@gmail.com", "03/05"], ["32356", "lbj@gmail.com", "£17.99"], ["56543", "mm@gmail.com", "£25.99"], ["445674", "kdb@gmail.com", "£12.99"], ["2565", "khabib@gmail.com", "£25.99"]] ,
+    data: [["29385", "it@gmail.com", "03/05"], ["32356", "lbj@gmail.com", "03/05"], ["56543", "mm@gmail.com", "02/05"], ["445674", "kdb@gmail.com", "02/05"], ["2565", "khabib@gmail.com", "30/04"]] ,
     },
   ]
 
@@ -54,9 +54,12 @@ export default function Home() {
                   </div>
                   <div className="card-body">
                     <div className="mb-1">
-                      {card.stat}
+                      <span style={{ fontWeight: 800, color: '#202020', fontSize: '24px'}}>{card.stat}</span>
                     </div>
-                    <div className="">{card.change}</div>
+                    <div style={{ fontSize: '12px'}}>
+                      <span className={card.change > 0 ? 'text-success' : 'text-danger'  } >{card.change} % change </span>
+                      <span classNAme="text-muted text-sm">{card.info}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -68,8 +71,8 @@ export default function Home() {
             return (
               <div className="col">
                 <table className="table" style={{ boxShadow: '0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%)'}}>
-                  <thead className="thead-light">
-                    <tr style={{ backgroundColor: 'white'}}>
+                  <thead className="thead">
+                    <tr style={{ backgroundColor: 'white', fontSize: '14px'}}>
                       {table.headings.map((heading) => {
                         return (
                           <th scope="col">{heading}</th>
@@ -83,7 +86,7 @@ export default function Home() {
                       return (
                         <tr>
                           {row.map((c) =>
-                            <th style={{fontWeight: 300, backgroundColor: 'white'}} className="font-weight-400">{c}</th>
+                            <th style={{fontWeight: 300, backgroundColor: 'white', fontSize: '12px'}} className="font-weight-400">{c}</th>
                           )}
                         </tr>
                       )
@@ -91,7 +94,7 @@ export default function Home() {
                     }
                     <tr>
                       <th colSpan={3} style={{fontWeight: 300, backgroundColor: 'white', textDecoration: 'underline'}}>
-                        <a href="#">View all</a>
+                        <a href="#">View all <i class="fas fa-long-arrow-alt-right"></i></a>
                       </th>
                     </tr>
                   </tbody>

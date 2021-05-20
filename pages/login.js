@@ -18,7 +18,7 @@ function Login(){
           <Form.Control type="password" placeholder="Password" style={{ fontSize: 14, borderRadius: '0px' }} />
         </Form.Group>
         <Button
-          variant="danger"
+          variant="success"
           type="button"
           block={true}
           onClick={() => console.log("haha")}
