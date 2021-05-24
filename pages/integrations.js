@@ -61,7 +61,11 @@ export default function Integrations() {
         redirect: 'follow'
       })
         .then(response => response.json())
-        .then(data => console.log(data));
+        .then(data => {
+          console.log(data);
+          window.open(data.redirect_url, "_blank");
+          setIsLoading(false);
+        });
     });
 
 
