@@ -12,7 +12,7 @@ export default function Integrations() {
     {name: "Productivity", icon: ""},
   ]
   const navbarLinks = [
-    {name: "Customers", link: "/ho"},
+    {name: "Customers", link: "/customers"},
     {name: "Revenue", link: "/ho"},
     {name: "Integrations", link: "/integrations"},
 
@@ -31,45 +31,30 @@ export default function Integrations() {
   ]
 
   const changeTab = (e) => console.log(e);
-
+  
   const beginIntegration = (name) => {
     if (name !== "GoCardless"){
       alert(name + " integration not yet complete");
       return;
     }
 
-    let obj = {
-      "first_name" : "Peters",
-      "last_name" : "Joe",
-      "email" : "joepeteres@gmail.com",
-      "password" : "beatbox",
-      "company_name" : "The Best Ever"
-  }
+    const sessionId = localStorage.getItem("sessionId"); 
+    if (sessionId == null) {
+      Router.push('/login')
+    }
 
     setIsLoading(true);
-    fetch(baseUrl + "login", {
-      method: "POST",
-      body: JSON.stringify(obj),
+    fetch(baseUrl + "/gocardless/authorize/signup", {
+      method: "GET",
+      headers: {"Authorization": sessionId},
+      redirect: 'follow'
     })
     .then(response => response.json())
     .then(data => {
-      let sessionId = data["session_id"];
-      console.log(sessionId)
-      fetch(baseUrl + "/gocardless/authorize/signup", {
-        method: "GET",
-        headers: {"Authorization": sessionId},
-        redirect: 'follow'
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          window.open(data.redirect_url, "_blank");
-          setIsLoading(false);
-        });
+      console.log(data);
+      window.open(data.redirect_url, "_blank");
+      setIsLoading(false);
     });
-
-
-    
   }
 
   return (
