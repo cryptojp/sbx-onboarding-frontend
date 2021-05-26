@@ -4,9 +4,7 @@ export default function Home() {
   const navbarLinks = [
     {name: "Customers", link: "/ho"},
     {name: "Revenue", link: "/ho"},
-    {name: "Integrations", link: "/integrations"},
-
-
+    {name: "Integrations", link: "/integrations"}
   ]
   const cards = [
     {stat: "3294", title: "New Subscribers", change: 5.6, info: "since last month"},
