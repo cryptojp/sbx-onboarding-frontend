@@ -5,7 +5,7 @@ export default function Customer() {
     {name: "Integrations", link: "/integrations"}
   ]
   return (
-    <div style={{ backgroundColor: '#edf2f9', height: '100vh'}}>
+    <div style={{ backgroundColor: '#edf2f9', paddingBottom: '50px'}}>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">BigCharge</a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,8 +86,8 @@ export default function Customer() {
                 <div className="jumbotron">
                   <p className="text-center">No payment methods linked to customer</p>
                   <div className="row justify-content-center">
-                  <button className="btn btn-primary mx-2">Add bank account</button>
-                  <button className="btn btn-primary mx-2">Add card</button>
+                  <button className="btn btn-info mx-2">Add bank account</button>
+                  <button className="btn btn-info mx-2">Add card</button>
                   </div>
 
                 </div>
@@ -125,7 +125,8 @@ export default function Customer() {
                           <td scope="col" style={{fontSize:'13px'}}>05/0{4-index}/2021</td>
                         </tr>
                       )
-                    })}                    
+                    })}
+                    <tr><a href="#">View all</a></tr>               
                   </tbody>
                 </table>
               </div>
