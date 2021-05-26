@@ -105,7 +105,7 @@ export default function Customers(){
     });
   }
 
-  getCustomers();
+  //getCustomers();
   return (
     <div id="root" style={{ backgroundColor: '#edf2f9', height: '100vh'}}>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">

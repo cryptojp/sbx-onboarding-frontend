@@ -27,7 +27,7 @@ export default function Customer() {
         <div className="row">
           <div className="col-12">
             <div className="card px-0 mt-5" style={{border:0, boxShadow: '0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%)', backgroundColor: '#f8f9fa'}}>
-              <div class="card-body text-center">
+              <div className="card-body text-center">
                 <h5 className="card-title">Alistair Marshall <a href="#">(am@gc.com)</a></h5>
                 <h6 className="text-muted" style={{fontWeight: 300, fontSize: 13}}>Created on Feb 02, 2020</h6>
                 <h6 className="text-muted" style={{fontWeight: 300, fontSize: 13}}><strong>Total Orders:</strong> 21</h6>
@@ -40,7 +40,7 @@ export default function Customer() {
                 <h5 className="card-title">Details</h5>
                 <div className="row">
                   <div className="col-6">
-                  <table class="table">
+                  <table className="table">
                     <tbody>
                       <tr style={{ fontSize: '12px'}}>
                         <th scope="row" style={{ border: '0', fontSize: '13px', paddingTop: 0, paddingBottom: 0, paddingLeft: 0 }}>ID</th>
@@ -58,7 +58,7 @@ export default function Customer() {
                   </table>
                   </div>
                   <div className="col-6">
-                    <table class="table">
+                    <table className="table">
                       <tbody>
                         <tr style={{ fontSize: '12px'}}>
                           <th scope="row" style={{ border: '0', fontSize: '13px', paddingTop: 0, paddingBottom: 0, paddingLeft: 0 }}>Billing Details</th>
@@ -81,19 +81,24 @@ export default function Customer() {
           </div>
           <div className="col-12">
             <div className="card px-0 mt-3" style={{border:0, boxShadow: '0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%)', backgroundColor: '#f8f9fa'}}>
-              <div class="card-body">
+              <div className="card-body">
                 <h5 className="card-title">Payment Methods</h5>
-                <p className="card-text text-small text-muted">
-                Payment Methods
-                </p>
+                <div className="jumbotron">
+                  <p className="text-center">No payment methods linked to customer</p>
+                  <div className="row justify-content-center">
+                  <button className="btn btn-primary mx-2">Add bank account</button>
+                  <button className="btn btn-primary mx-2">Add card</button>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
           <div className="col-12">
             <div className="card px-0 mt-3" style={{border:0, boxShadow: '0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%)', backgroundColor: '#f8f9fa'}}>
-              <div class="card-body">
+              <div className="card-body">
                 <h5 className="card-title">Orders</h5>
-                <table class="table">
+                <table className="table">
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
@@ -107,17 +112,17 @@ export default function Customer() {
                     {[1344, 23435, 43550, 53561].map((i, index) => {
                       return (
                         <tr>
-                          <td scope="col">
+                          <td scope="col" style={{fontSize:'13px'}}>
                             {i}
                           </td>
-                          <td scope="col">
-                            £24.99 {index !== 0 ? <span class="badge badge-success">Succeeded</span> : <span class="badge badge-danger">Failed</span> }
+                          <td scope="col" style={{fontSize:'13px'}}>
+                            £24.99 {index !== 0 ? <span className="badge badge-success">Succeeded</span> : <span className="badge badge-danger">Failed</span> }
                           </td>
-                          <td scope="col">
+                          <td scope="col" style={{fontSize:'13px'}}>
                             Amazing products
                           </td>
-                          <td scope="col"><a href="#">Direct Debit</a></td>
-                          <td scope="col">05/0{4-index}/2021</td>
+                          <td scope="col" style={{fontSize:'13px'}}><a href="#">Direct Debit</a></td>
+                          <td scope="col" style={{fontSize:'13px'}}>05/0{4-index}/2021</td>
                         </tr>
                       )
                     })}                    
