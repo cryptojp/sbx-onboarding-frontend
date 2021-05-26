@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 export default function Home() {
   const navbarLinks = [
-    {name: "Customers", link: "/ho"},
+    {name: "Customers", link: "/customers"},
     {name: "Revenue", link: "/ho"},
     {name: "Integrations", link: "/integrations"}
   ]
