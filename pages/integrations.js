@@ -4,6 +4,8 @@ const baseUrl = "https://fathomless-temple-12276.herokuapp.com/";
 
 export default function Integrations() {
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+ 
   const integrationsTabs = [
     {name: "All", icon: ""},
     {name: "Payment", icon: ""},
@@ -49,11 +51,26 @@ export default function Integrations() {
       headers: {"Authorization": sessionId},
       redirect: 'follow'
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      window.open(data.redirect_url, "_blank");
-      setIsLoading(false);
+    .then(response => Promise.all([response, response.json()]))
+    .then(([response, body]) => {
+      if (response.ok) {
+          window.open(body.redirect_url, "_blank");
+          setIsLoading(false);
+          return
+        } else {
+          return body
+        }
+    })
+    .then(function(object) {
+        if(object != undefined) {
+            if(object.status === 401) {
+              Router.push('/login')
+            }
+
+            setMessage(object.message)
+            setIsLoading(false);
+            return
+        }
     });
   }
 
@@ -76,12 +93,19 @@ export default function Integrations() {
           </ul>
         </div>
       </nav>
+
+
     <div className="container">
       <div className="jumbotron bg-white text-center mt-5">
         <h1 className="display-4">Connect to your apps</h1>
         <p className="lead">
           Choose from a range of smart integrations that allow you to connect your SuperCharger app with all your key products and services, from your accountancy software to your payments platform.
         </p>
+
+        {message && (
+                <p style={{ color: 'white', backgroundColor: 'red' }} className="error"> {message} </p>
+        )}
+
       </div>
       <ul className="nav nav-pills justify-content-center mb-3">
         <li className="nav-item">
