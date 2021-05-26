@@ -1,9 +1,30 @@
+const baseUrl = "https://fathomless-temple-12276.herokuapp.com/";
+
 export default function Customer() {
   const navbarLinks = [
     {name: "Customers", link: "/ho"},
     {name: "Revenue", link: "/ho"},
     {name: "Integrations", link: "/integrations"}
   ]
+  const addBankAccount = () => {
+    fetch(baseUrl + "gocardless/customer", {
+      method: "POST",
+      headers: {"Authorization": localStorage.getItem("sessionId")},
+      redirect: 'follow'
+    })
+    .then(response => Promise.all([response, response.json()]))
+    .then(([response, body]) => {
+      if (response.ok) {
+          window.open(body.redirect_url, "_blank");
+          return
+        }
+    })
+    .catch(function(object) {
+      console.log("error setting up bank accounts");
+    });
+
+  }
+
   return (
     <div style={{ backgroundColor: '#edf2f9', paddingBottom: '50px'}}>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -86,7 +107,7 @@ export default function Customer() {
                 <div className="jumbotron">
                   <p className="text-center">No payment methods linked to customer</p>
                   <div className="row justify-content-center">
-                  <button className="btn btn-info mx-2">Add bank account</button>
+                  <button onClick={addBankAccount} className="btn btn-info mx-2">Add bank account</button>
                   <button className="btn btn-info mx-2">Add card</button>
                   </div>
 
