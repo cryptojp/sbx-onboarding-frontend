@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Router from 'next/router'
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal'
+import Link from "next/link"
   
 export default function Customers(){
   const navbarLinks = [
@@ -162,7 +163,12 @@ export default function Customers(){
                         <td>{customer.email}</td>
                         <td>{customer.phone}</td>
                         <td>{customer.company_name}</td>
-                        <td><a href={'/customer/' + customer.id}>View Customer</a></td>
+                        <td>
+                        <Link href="/customer/[id]" as={"/customer/" + customer.id}>
+              <a>View Customer</a>
+            </Link>
+                          
+                          </td>
                   </tr>);                                        
                     })
                   }

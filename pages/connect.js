@@ -33,7 +33,7 @@ export default function Connect(){
         .then(response => Promise.all([response, response.json()]))
         .then(([response, body]) => {
             if (response.ok) {
-               setMessage("Completed Authorization with Gocardless")
+               setMessage("Completed Authorization with Gocardless. Please check your email and complete verification")
                return
             } else {
                return body
