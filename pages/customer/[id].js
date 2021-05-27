@@ -9,24 +9,6 @@ export default function Customer() {
     {name: "Revenue", link: "/ho"},
     {name: "Integrations", link: "/integrations"}
   ]
-  const addBankAccount = () => {
-    fetch(baseUrl + "gocardless/customer", {
-      method: "POST",
-      headers: {"Authorization": localStorage.getItem("sessionId")},
-      redirect: 'follow'
-    })
-    .then(response => Promise.all([response, response.json()]))
-    .then(([response, body]) => {
-      if (response.ok) {
-          window.open(body.redirect_url, "_blank");
-          return
-        }
-    })
-    .catch(function(object) {
-      console.log("error setting up bank accounts");
-    });
-
-  }
 
   const [customer, setCustomer] = useState('');
   const [payments, setPayments] = useState('');
@@ -35,6 +17,43 @@ export default function Customer() {
   
   const router = useRouter();
   let pid = router.query.id;
+
+  const addBankAccount = async event => {
+    event.preventDefault()
+
+    let obj = {
+      "customer_id" : parseInt(pid)
+    }
+
+   const sessionId = localStorage.getItem("sessionId");      
+   const res = await fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/customer", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: {"Authorization": sessionId}
+    })
+    .then(response => Promise.all([response, response.json()]))
+    .then(([response, body]) => {
+        if (response.ok) {
+           window.open(body.redirect_url, "_blank");
+           return
+        } else {
+           return response
+        }
+    })
+    .then(function(object) {
+      console.log(object)
+        if(object != undefined) {
+            if(object.status === 401) {
+               Router.push('/login')
+               return
+            }
+
+            console.log(object.message)
+            return
+        }
+    });
+  }
+
 
   const getCustomerData = async event => {    
     useEffect(() => {
@@ -236,7 +255,7 @@ export default function Customer() {
                   </thead>
                   <tbody>
                   
-                    {mandates.map((mandate, index) => {
+                    {mandates && mandates.map((mandate, index) => {
                       return (
                         <tr>
                           <td scope="col" style={{fontSize:'13px'}}>
@@ -266,7 +285,7 @@ export default function Customer() {
                 </table>
                 }
 
-               {!subscriptions &&
+               {!mandates &&
                   <p className="text-center">No payment methods linked to customer</p>
                }
 
