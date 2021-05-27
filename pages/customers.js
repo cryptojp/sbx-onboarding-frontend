@@ -127,53 +127,47 @@ export default function Customers(){
         </div>
       </nav>
 
-      <div className="col-3 mb-3" >
-            <div className="flex justify-content-center" style={{ marginTop: 50, marginBottom: 50, marginLeft: -200 }}>
-                <div className="text-center">
-                    <h5 className="card-title"> </h5>
-                </div>
-
-                <div className="text-center">
-                   <Button variant="primary" onClick={handleShow}>
-                      Add Customer
-                    </Button>
-                </div>
-            </div>
-
+      
+      <div class="container mt-5">
+      <table className="table">
+          <thead className="thead-light">
+              <tr>
+              <th scope="col">#</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Company Name</th>
+              <th></th>
+              </tr>
+          </thead>
+          <tbody id={'customers'}>
+          {customers && customers.map(function(customer, key){
+                  return(<tr className="bg-white" key={key}>
+                      <th scope="row">{customer.id}</th>
+                      <td>{customer.first_name}</td>
+                      <td>{customer.last_name}</td>
+                      <td>{customer.email}</td>
+                      <td>{customer.phone}</td>
+                      <td>{customer.company_name}</td>
+                      <td>
+                      <Link href="/customer/[id]" as={"/customer/" + customer.id}>
+            <a>View Customer</a>
+          </Link>
+                        
+                        </td>
+                </tr>);                                        
+                  })
+                }
+          </tbody>
+      </table>
+      <div className="col pl-0">
+          <Button variant="primary" onClick={handleShow} style={{ borderRadius: 0}}>
+            Add Customer
+          </Button>
           </div>
+      </div>
 
-          <table className="table" style={{ width: 1200, marginTop: 50, marginLeft: 50}}>
-            <thead className="thead-dark">
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Company Name</th>
-                <th></th>
-                </tr>
-            </thead>
-            <tbody id={'customers'}>
-            {customers && customers.map(function(customer, key){
-                    return(<tr key={key}>
-                        <th scope="row">{customer.id}</th>
-                        <td>{customer.first_name}</td>
-                        <td>{customer.last_name}</td>
-                        <td>{customer.email}</td>
-                        <td>{customer.phone}</td>
-                        <td>{customer.company_name}</td>
-                        <td>
-                        <Link href="/customer/[id]" as={"/customer/" + customer.id}>
-              <a>View Customer</a>
-            </Link>
-                          
-                          </td>
-                  </tr>);                                        
-                    })
-                  }
-            </tbody>
-        </table>
 
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
