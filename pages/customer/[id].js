@@ -2,6 +2,8 @@ const baseUrl = "https://fathomless-temple-12276.herokuapp.com/";
 import { useRouter } from 'next/router'
 import Button from 'react-bootstrap/Button';
 import React, {useEffect, useState } from "react";
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form';
 
 export default function Customer() {
   const navbarLinks = [
@@ -14,9 +16,100 @@ export default function Customer() {
   const [payments, setPayments] = useState('');
   const [subscriptions, setSubscriptions] = useState('');
   const [mandates, setMandates] = useState('');
+
+  const [mandateId, setMandateId] = useState('');
+ 
+  const [showSinglePayment, setShowSinglePayment] = useState(false);
+  const handleCloseSinglePayment = () => setShowSinglePayment(true);
+  const handleShowSinglePayment = (mandate) => function() {
+    setShowSinglePayment(true);
+    setMandateId(mandate)
+  } 
+
+  const [showRecurringPayment, setShowRecurringPayment] = useState(false);
+  const handleShowRecurringPayment = (mandate) => function() {
+    setShowRecurringPayment(true);
+    setMandateId(mandate)
+  } 
+  const handleCloseRecurringPayment = () => setShowRecurringPayment(false);
   
   const router = useRouter();
   let pid = router.query.id;
+
+  const [singlePaymentErrorMessage, setSinglePaymentErrorMessage] = useState('');
+  const addSinglePayment = async event => {
+    event.preventDefault()
+
+     let obj = {
+        "amount" :  parseInt(event.target.amount.value)
+     }
+
+     const sessionId = localStorage.getItem("sessionId");      
+     const res = await fetch("https://fathomless-temple-12276.herokuapp.com/customer/single-payment/"+mandateId, {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {"Authorization": sessionId}
+      })
+      .then(response => Promise.all([response, response.json()]))
+      .then(([response, body]) => {
+          if (response.ok) {
+              window.location.reload(false)
+              return
+          } else {
+              return response
+          }
+      })
+      .then(function(object) {
+          if(object != undefined) {
+              if(object.status === 401) {
+                  Router.push('/login')
+                  return
+              }
+
+              setSinglePaymentErrorMessage(object.message)
+              return
+          }
+      });
+    }
+
+    const [recurringPaymentErrorMessage, setRecurringPaymentErrorMessage] = useState('');
+    const addRecurringPayment = async event => {
+       event.preventDefault()
+  
+       let obj = {
+          "amount" :  parseInt(event.target.amount.value),
+          "frequency" : "monthly",
+          "day_of_month" : 10
+       }
+  
+       const sessionId = localStorage.getItem("sessionId");      
+       const res = await fetch("https://fathomless-temple-12276.herokuapp.com/customer/recurring-payment/"+mandateId, {
+          method: "POST",
+          body: JSON.stringify(obj),
+          headers: {"Authorization": sessionId}
+        })
+        .then(response => Promise.all([response, response.json()]))
+        .then(([response, body]) => {
+            if (response.ok) {
+                window.location.reload(false)
+                return
+            } else {
+                return response
+            }
+        })
+        .then(function(object) {
+            if(object != undefined) {
+                if(object.status === 401) {
+                    Router.push('/login')
+                    return
+                }
+  
+                setRecurringPaymentErrorMessage(object.message)
+                return
+            }
+        });
+      }
+
 
   const addBankAccount = async event => {
     event.preventDefault()
@@ -269,12 +362,12 @@ export default function Customer() {
                           </td>
                           <td scope="col" style={{fontSize:'13px'}}><a href="#">{mandate.status}</a></td>
                           <td>
-                          <Button style={{fontSize:'13px'}} variant="primary">
+                          <Button onClick={handleShowSinglePayment(mandate.mandate_id)} style={{fontSize:'13px'}} variant="primary">
                                 Add Payment
                           </Button>
                           </td>
                           <td>
-                          <Button style={{fontSize:'13px'}} variant="primary">
+                          <Button onClick={handleShowRecurringPayment(mandate.mandate_id)} style={{fontSize:'13px'}} variant="primary">
                                Add Subscription
                           </Button>
                           </td>
@@ -385,6 +478,68 @@ export default function Customer() {
 
         </div>
       </div>
+
+      <Modal show={showSinglePayment} onHide={handleCloseSinglePayment}>
+            <Modal.Header closeButton>
+            <Modal.Title>Add One Time Payment</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+            {singlePaymentErrorMessage && (
+                <p className="error"> {singlePaymentErrorMessage} </p>
+            )}
+            <form type="POST" onSubmit={addSinglePayment} style={{ marginBottom: '20px' }}>
+                <Form.Group  style={{ borderRadius: '0px' }}>
+                  <Form.Control type="text" name="amount" placeholder="Enter Amount" style={{ fontSize: 14, borderRadius: '0px' }}/>
+                </Form.Group>
+
+                <Button
+                variant="success"
+                type="submit"
+                block={true}
+                style={{ borderRadius: '5px', padding: '10px', fontSize: '15px'}}
+                > Submit
+                </Button>
+            </form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseSinglePayment}>
+                Close
+            </Button>
+            
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showRecurringPayment} onHide={handleCloseRecurringPayment}>
+            <Modal.Header closeButton>
+            <Modal.Title>Add Subscription</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+            {recurringPaymentErrorMessage && (
+                <p className="error"> {recurringPaymentErrorMessage} </p>
+            )}
+            <form type="POST" onSubmit={addRecurringPayment} style={{ marginBottom: '20px' }}>
+                <Form.Group  style={{ borderRadius: '0px' }}>
+                  <Form.Control type="text" name="amount" placeholder="Enter Amount" style={{ fontSize: 14, borderRadius: '0px' }}/>
+                </Form.Group>
+
+                <Button
+                variant="success"
+                type="submit"
+                block={true}
+                style={{ borderRadius: '5px', padding: '10px', fontSize: '15px'}}
+                > Submit
+                </Button>
+            </form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseRecurringPayment}>
+                Close
+            </Button>
+            
+            </Modal.Footer>
+        </Modal>
     </div>
   )
 }
