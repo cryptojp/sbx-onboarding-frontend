@@ -32,10 +32,7 @@ export default function Customer() {
     setMandateId(mandate)
   } 
   const handleCloseRecurringPayment = () => setShowRecurringPayment(false);
-  
   const router = useRouter();
-  let pid = router.query.id;
-
   const [singlePaymentErrorMessage, setSinglePaymentErrorMessage] = useState('');
   const addSinglePayment = async event => {
     event.preventDefault()
@@ -147,46 +144,91 @@ export default function Customer() {
     });
   }
 
-
   const getCustomerData = async event => {    
-    useEffect(() => {
-        const sessionId = localStorage.getItem("sessionId");  
-        if (sessionId == null) {
-            Router.push('/login')
-        }
+      const sessionId = localStorage.getItem("sessionId");
+      let pid = router.query.id;
+      console.log(pid);
+      if (sessionId == null) {
+          Router.push('/login')
+      }
 
-        //Get customer details
-        fetch("https://fathomless-temple-12276.herokuapp.com/customer/"+pid, {
-            method: "GET",
-            headers: {"Authorization": sessionId}
+      //Get customer details
+      fetch("https://fathomless-temple-12276.herokuapp.com/customer/"+pid, {
+          method: "GET",
+          headers: {"Authorization": sessionId}
+      })
+      .then(response => Promise.all([response, response.json()]))
+      .then(([response, body]) => {
+          if (response.ok) {
+              setCustomer(body)
+              return
+          } else {
+              return response
+          }
+      })
+      .then(function(object) {
+          if(object != undefined) {
+              if(object.status === 401) {
+                  Router.push('/login')
+              }
+          }
+      });
+
+      //Get mandates
+      fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/mandates/"+pid, {
+        method: "GET",
+        headers: {"Authorization": sessionId}
         })
         .then(response => Promise.all([response, response.json()]))
         .then(([response, body]) => {
             if (response.ok) {
-               setCustomer(body)
-               return
+              console.log(body)
+              setMandates(body)
+              return
             } else {
-               return response
+              return response
             }
         })
         .then(function(object) {
             if(object != undefined) {
                 if(object.status === 401) {
-                   Router.push('/login')
+                  Router.push('/login')
                 }
             }
         });
 
-       //Get mandates
-       fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/mandates/"+pid, {
+      //Get customer payments
+      fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/payments/"+pid, {
+        method: "GET",
+        headers: {"Authorization": sessionId}
+        })
+        .then(response => Promise.all([response, response.json()]))
+        .then(([response, body]) => {
+            if (response.ok) {
+              setPayments(body)
+              return
+            } else {
+              return response
+            }
+        })
+        .then(function(object) {
+            if(object != undefined) {
+                if(object.status === 401) {
+                  Router.push('/login')
+                }
+            }
+        });
+
+        //Get customer subscriptions
+        fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/subscriptions/"+pid, {
           method: "GET",
           headers: {"Authorization": sessionId}
           })
           .then(response => Promise.all([response, response.json()]))
           .then(([response, body]) => {
               if (response.ok) {
+                setSubscriptions(body)
                 console.log(body)
-                setMandates(body)
                 return
               } else {
                 return response
@@ -199,55 +241,14 @@ export default function Customer() {
                   }
               }
           });
-
-        //Get customer payments
-       fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/payments/"+pid, {
-          method: "GET",
-          headers: {"Authorization": sessionId}
-          })
-          .then(response => Promise.all([response, response.json()]))
-          .then(([response, body]) => {
-              if (response.ok) {
-                setPayments(body)
-                return
-              } else {
-                return response
-              }
-          })
-          .then(function(object) {
-              if(object != undefined) {
-                  if(object.status === 401) {
-                    Router.push('/login')
-                  }
-              }
-          });
-
-          //Get customer subscriptions
-          fetch("https://fathomless-temple-12276.herokuapp.com/gocardless/subscriptions/"+pid, {
-            method: "GET",
-            headers: {"Authorization": sessionId}
-            })
-            .then(response => Promise.all([response, response.json()]))
-            .then(([response, body]) => {
-                if (response.ok) {
-                  setSubscriptions(body)
-                  console.log(body)
-                  return
-                } else {
-                  return response
-                }
-            })
-            .then(function(object) {
-                if(object != undefined) {
-                    if(object.status === 401) {
-                      Router.push('/login')
-                    }
-                }
-            });
-        }, []);
+     
    }
 
-  getCustomerData()
+  useEffect(() => {
+    console.log("haha")
+    getCustomerData();
+  }, [])
+
   return (
     <div style={{ backgroundColor: '#edf2f9', paddingBottom: '50px'}}>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
