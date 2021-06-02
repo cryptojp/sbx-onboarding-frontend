@@ -4,14 +4,10 @@ import Button from 'react-bootstrap/Button';
 import React, {useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form';
+import Navbar from '../components/navbar';
+
 
 export default function Customer() {
-  const navbarLinks = [
-    {name: "Customers", link: "/customers"},
-    {name: "Revenue", link: "/ho"},
-    {name: "Integrations", link: "/integrations"}
-  ]
-
   const [customer, setCustomer] = useState('');
   const [payments, setPayments] = useState('');
   const [subscriptions, setSubscriptions] = useState('');
@@ -251,23 +247,7 @@ export default function Customer() {
 
   return (
     <div style={{ backgroundColor: '#edf2f9', paddingBottom: '50px'}}>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">BigCharge</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            {navbarLinks.map((navbar) => {
-              return (
-                <li className="nav-item">
-                  <a className="nav-link" href={navbar.link}>{navbar.name}</a>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </nav>
+      <Navbar />
       <div className="container"> 
         <div className="row">
           <div className="col-12">

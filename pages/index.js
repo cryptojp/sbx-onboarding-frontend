@@ -1,11 +1,6 @@
-import Head from 'next/head'
+import Navbar from '../components/navbar';
 
 export default function Home() {
-  const navbarLinks = [
-    {name: "Customers", link: "/customers"},
-    {name: "Revenue", link: "/ho"},
-    {name: "Integrations", link: "/integrations"}
-  ]
   const cards = [
     {stat: "3294", title: "New Subscribers", change: 5.6, info: "since last month"},
     {stat: "£ 103,507", title: "Monthly Recurring Revenue", change: -12.6, info: "since last month"},
@@ -30,23 +25,7 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: '#edf2f9', height: '100vh'}}>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">BigCharge</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            {navbarLinks.map((navbar) => {
-              return (
-                <li className="nav-item">
-                  <a className="nav-link" href={navbar.link}>{navbar.name}</a>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </nav>
+      <Navbar />
       <div className="container">
         <div className="row my-5">
           {cards.map((card) => {
